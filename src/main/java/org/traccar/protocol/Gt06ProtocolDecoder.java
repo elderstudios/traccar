@@ -19,6 +19,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.traccar.BaseProtocolDecoder;
 import org.traccar.Context;
 import org.traccar.DeviceSession;
@@ -48,6 +50,7 @@ import java.util.regex.Pattern;
 
 public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Gt06ProtocolDecoder.class);
     private final Map<Integer, ByteBuf> photos = new HashMap<>();
 
     public Gt06ProtocolDecoder(Protocol protocol) {
@@ -1024,16 +1027,20 @@ public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
             Channel channel, SocketAddress remoteAddress, Object msg) throws Exception {
 
         ByteBuf buf = (ByteBuf) msg;
+        LOGGER.info("Decoder HEX: " + ByteBufUtil.hexDump(buf));
 
         int header = buf.readShort();
-
+        Object result = null;
         if (header == 0x7878) {
-            return decodeBasic(channel, remoteAddress, buf);
+            result = decodeBasic(channel, remoteAddress, buf);
         } else if (header == 0x7979) {
-            return decodeExtended(channel, remoteAddress, buf);
+            result = decodeExtended(channel, remoteAddress, buf);
         }
 
-        return null;
+
+        LOGGER.info("Decoder JSON:" + Context.getObjectMapper().writeValueAsString(result));
+
+        return result;
     }
 
 }

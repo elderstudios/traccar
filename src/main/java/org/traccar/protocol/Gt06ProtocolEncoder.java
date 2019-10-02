@@ -16,7 +16,10 @@
 package org.traccar.protocol;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.traccar.BaseProtocolEncoder;
 import org.traccar.Context;
 import org.traccar.helper.Checksum;
@@ -26,6 +29,8 @@ import org.traccar.Protocol;
 import java.nio.charset.StandardCharsets;
 
 public class Gt06ProtocolEncoder extends BaseProtocolEncoder {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Gt06ProtocolEncoder.class);
 
     public Gt06ProtocolEncoder(Protocol protocol) {
         super(protocol);
@@ -60,6 +65,8 @@ public class Gt06ProtocolEncoder extends BaseProtocolEncoder {
         buf.writeByte('\r');
         buf.writeByte('\n');
 
+        LOGGER.info("Encoder Content:" + content);
+        LOGGER.info("Encoder HEX:" + ByteBufUtil.hexDump(buf));
         return buf;
     }
 

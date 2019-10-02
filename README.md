@@ -1,3 +1,11 @@
+To set up JC100 for testing purposes, please run commands bellow:
+* move to scripts folder `cd scripts`
+* give execute permission to the set_camera.sh script: `chmod +x set_camera.sh`
+* run the script `./scripts/set_camera.sh`
+
+
+
+
 # [Traccar](https://www.traccar.org)
 [![Build Status](https://travis-ci.org/traccar/traccar.svg?branch=master)](https://travis-ci.org/traccar/traccar)
 
